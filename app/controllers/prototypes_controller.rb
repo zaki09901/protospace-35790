@@ -1,6 +1,9 @@
 class PrototypesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :edit, :destroy]
-  before_action :move_to_index, only: [:new, :edit, :show]      #except: [:index, :show, :update, :destroy, :create]
+  before_action :authenticate_user!, except: [:index, :show] 
+  #authenticate_user! ログイン済みのユーザーのみアクセスを許可する <=> ログインしていないユーザーでもできること・・・index,show
+
+  before_action :move_to_index, except: [:show, :index, :new, :create, :update]      #except: [:index, :show, :update, :destroy, :create]
+  
   def index
     @prototypes = Prototype.all
     end
@@ -13,9 +16,6 @@ class PrototypesController < ApplicationController
     @prototype = Prototype.find(params[:id])
     @comment = Comment.new
     @comments = @prototype.comments.includes(:user)
-
-
-
   end 
 
   def  edit
